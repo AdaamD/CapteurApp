@@ -52,7 +52,7 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
         int color;
         if (acceleration < 10) {
             color = Color.GREEN; // Valeurs inférieures : vert
-        } else if (acceleration < 15) {
+        } else if (acceleration < 12) {
             color = Color.BLACK; // Valeurs moyennes : noir
         } else {
             color = Color.RED; // Valeurs supérieures : rouge
@@ -64,7 +64,6 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    // Non utilisé
+        // Méthode non utilisée dans cette implémentation
     }
-
 }
