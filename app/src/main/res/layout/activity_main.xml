@@ -1,19 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
-    <TextView
+
+    <Button
+        android:id="@+id/btnAllSensors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Tous les capteurs"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btnAvailableSensors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capteurs disponibles"
+        android:layout_below="@id/btnAllSensors"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/btnUnavailableSensors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capteurs indisponibles"
+        android:layout_below="@id/btnAvailableSensors"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+
+    <TextView
+        android:id="@+id/txtSensorList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnUnavailableSensors"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnGoToSecondActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtSensorList"
+        android:text="Aller à la deuxième activité"
+        android:layout_centerInParent="true"/>
+
+
+</RelativeLayout>
