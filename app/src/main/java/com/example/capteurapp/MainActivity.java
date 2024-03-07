@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnUnavailableSensors;
     private TextView txtSensorList;
     private Button btnGoToSecondActivity;
+    private Button btnGoToThirdActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         btnUnavailableSensors = findViewById(R.id.btnUnavailableSensors);
         txtSensorList = findViewById(R.id.txtSensorList);
         btnGoToSecondActivity = findViewById(R.id.btnGoToSecondActivity);
+        btnGoToThirdActivity = findViewById(R.id.btnGoToThirdActivity);
+
 
         btnAllSensors.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SecondActivity.class));
+            }
+        });
+
+        btnGoToThirdActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ThirdActivity.class));
             }
         });
     }
