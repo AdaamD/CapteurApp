@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Button
+        android:id="@+id/btnAllSensors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tous les capteurs"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/btnAvailableSensors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capteurs disponibles"
+        android:layout_below="@id/btnAllSensors"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/btnUnavailableSensors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capteurs indisponibles"
+        android:layout_below="@id/btnAvailableSensors"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+
+    <TextView
+        android:id="@+id/txtSensorList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnUnavailableSensors"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
+</RelativeLayout>

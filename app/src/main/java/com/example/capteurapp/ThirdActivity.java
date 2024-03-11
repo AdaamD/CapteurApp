@@ -50,9 +50,9 @@ public class ThirdActivity extends AppCompatActivity implements SensorEventListe
         // Détection de la direction du mouvement en fonction des valeurs d'accélération
         String direction;
         if (Math.abs(x) > Math.abs(y) && Math.abs(x) > Math.abs(z)) {
-            direction = (x > 0) ? "Droite" : "Gauche";
+            direction = (x > 0) ? "Gauche" : "Droite";
         } else if (Math.abs(y) > Math.abs(x) && Math.abs(y) > Math.abs(z)) {
-            direction = (y > 0) ? "Bas" : "Haut";
+            direction = (y > 0) ? "Haut" : "Bas";
         } else {
             direction = (z > 0) ? "Avant" : "Arrière";
         }

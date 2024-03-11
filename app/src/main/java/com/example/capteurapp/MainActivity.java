@@ -12,10 +12,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnAllSensors;
-    private Button btnAvailableSensors;
-    private Button btnUnavailableSensors;
-    private TextView txtSensorList;
+    private Button btnGoToFirstActivity;
     private Button btnGoToSecondActivity;
     private Button btnGoToThirdActivity;
 
@@ -25,34 +22,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnAllSensors = findViewById(R.id.btnAllSensors);
-        btnAvailableSensors = findViewById(R.id.btnAvailableSensors);
-        btnUnavailableSensors = findViewById(R.id.btnUnavailableSensors);
-        txtSensorList = findViewById(R.id.txtSensorList);
+        btnGoToFirstActivity = findViewById(R.id.btnGoToFirstActivity);
         btnGoToSecondActivity = findViewById(R.id.btnGoToSecondActivity);
         btnGoToThirdActivity = findViewById(R.id.btnGoToThirdActivity);
 
 
-        btnAllSensors.setOnClickListener(new View.OnClickListener() {
+        btnGoToFirstActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayAllSensors();
+                startActivity(new Intent(MainActivity.this, AllCaptorActivity.class));
             }
         });
 
-        btnAvailableSensors.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayAvailableSensors();
-            }
-        });
-
-        btnUnavailableSensors.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayUnavailableSensors();
-            }
-        });
 
         btnGoToSecondActivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,43 +50,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void displayAllSensors() {
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        StringBuilder sensorStringBuilder = new StringBuilder();
-
-        for (Sensor sensor : sensorList) {
-            sensorStringBuilder.append(sensor.getName()).append("\n");
-        }
-
-        txtSensorList.setText(sensorStringBuilder.toString());
-    }
-
-    private void displayAvailableSensors() {
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        StringBuilder availableSensorStringBuilder = new StringBuilder();
-
-        for (Sensor sensor : sensorList) {
-            if (sensor != null) {
-                availableSensorStringBuilder.append(sensor.getName()).append("\n");
-            }
-        }
-
-        txtSensorList.setText(availableSensorStringBuilder.toString());
-    }
-
-    private void displayUnavailableSensors() {
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
-        StringBuilder unavailableSensorStringBuilder = new StringBuilder();
-
-        for (Sensor sensor : sensorList) {
-            if (sensor == null) {
-                unavailableSensorStringBuilder.append("Capteur indisponible : ").append(sensor.getName()).append("\n");
-            }
-        }
-
-        txtSensorList.setText(unavailableSensorStringBuilder.toString());
-    }
 }
