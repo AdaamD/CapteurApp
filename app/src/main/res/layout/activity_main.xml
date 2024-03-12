@@ -30,5 +30,13 @@
         android:text="Aller à la troisième activité"
         android:layout_centerInParent="true"/>
 
+    <Button
+        android:id="@+id/btnGoToFlashActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnGoToThirdActivity"
+        android:text="Aller au flash"
+        android:layout_centerInParent="true"/>
+
 
 </RelativeLayout>
