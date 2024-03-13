@@ -37,6 +37,8 @@
             android:exported="false"
             android:theme="@style/Theme.CapteurApp" />
         <activity android:name=".FlashActivity" />
+        <activity android:name=".ProximityActivity" />
+
 
     </application>
 </manifest>

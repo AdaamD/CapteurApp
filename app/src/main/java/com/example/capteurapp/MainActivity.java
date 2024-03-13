@@ -15,7 +15,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnGoToFirstActivity;
     private Button btnGoToSecondActivity;
     private Button btnGoToThirdActivity;
-    private Button btnGoToFlashActivity; ;
+    private Button btnGoToFlashActivity;
+    private Button btnGoToProximityActivity;
 
 
     @Override
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         btnGoToSecondActivity = findViewById(R.id.btnGoToSecondActivity);
         btnGoToThirdActivity = findViewById(R.id.btnGoToThirdActivity);
         btnGoToFlashActivity = findViewById(R.id.btnGoToFlashActivity);
+        btnGoToProximityActivity = findViewById(R.id.btnGoToProximityActivity);
 
 
         btnGoToFirstActivity.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnGoToProximityActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ProximityActivity .class));
+            }
+        });
 
     }
 
