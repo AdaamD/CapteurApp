@@ -52,10 +52,10 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
             // Mettre à jour l'image en fonction de la proximité
             if (proximityValue < proximitySensor.getMaximumRange()) {
                 // L'objet est proche
-                imageView.setImageResource(R.drawable.bluesky_back);
+                imageView.setImageResource(R.drawable.prox);
             } else {
                 // L'objet est loin
-                imageView.setImageResource(R.drawable.desert);
+                imageView.setImageResource(R.drawable.noproximity);
             }
         }
     }
