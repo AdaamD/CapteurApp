@@ -34,7 +34,7 @@
         </activity>
 
         <activity android:name=".AllCaptorActivity" />
-        <activity android:name=".SecondActivity" />
+        <activity android:name=".AccelerometerActivity" />
         <activity
             android:name=".ThirdActivity"
             android:exported="false"

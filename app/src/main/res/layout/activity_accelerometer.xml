@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".AccelerometerActivity"
+    android:background="@drawable/grey_back1">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Changez le fond d'écran en fonction de votre mouvement !  Vert pour le calme, noir pour le moyen, rouge pour l'action !"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:padding="25dp"
+        android:layout_alignParentTop="true"
+        android:textColor="@android:color/black"/>
+
+    <Button
+        android:id="@+id/backgroundButton"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:padding="16dp"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+    </Button>
+
+</RelativeLayout>

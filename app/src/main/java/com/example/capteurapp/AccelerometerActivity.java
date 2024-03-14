@@ -1,27 +1,32 @@
 package com.example.capteurapp;
 
-
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SecondActivity extends AppCompatActivity implements SensorEventListener {
+public class AccelerometerActivity extends AppCompatActivity implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
+    private Button backgroundButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_accelerometer);
 
         // Initialisation du SensorManager et du capteur d'accéléromètre
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        // Récupérer le LinearLayout de fond
+        backgroundButton = findViewById(R.id.backgroundButton);
     }
 
     @Override
@@ -58,8 +63,8 @@ public class SecondActivity extends AppCompatActivity implements SensorEventList
             color = Color.RED; // Valeurs supérieures : rouge
         }
 
-        // Changement de la couleur de fond de l'activité
-        getWindow().getDecorView().setBackgroundColor(color);
+        // Changement de la couleur de fond du LinearLayout
+        backgroundButton.setBackgroundColor(color);
     }
 
     @Override
