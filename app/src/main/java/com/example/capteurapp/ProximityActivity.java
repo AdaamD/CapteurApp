@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
     private SensorManager sensorManager;
     private Sensor proximitySensor;
     private ImageView imageView;
+    private TextView proximityStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
 
         // Référence à l'image view
         imageView = findViewById(R.id.imageView);
+        proximityStatus = findViewById(R.id.proximityStatus);
     }
 
     @Override
@@ -53,9 +56,11 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
             if (proximityValue < proximitySensor.getMaximumRange()) {
                 // L'objet est proche
                 imageView.setImageResource(R.drawable.prox);
+                proximityStatus.setText("Téléphone proche !");
             } else {
                 // L'objet est loin
                 imageView.setImageResource(R.drawable.noproximity);
+                proximityStatus.setText("Téléphone loin !");
             }
         }
     }
