@@ -1,74 +1,98 @@
 package com.example.capteurapp;
 
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
+import android.content.Context;
+import androidx.core.content.ContextCompat;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AccelerometerActivity extends AppCompatActivity implements SensorEventListener {
 
-    private SensorManager sensorManager;
-    private Sensor accelerometer;
-    private Button backgroundButton;
+    SensorManager sensorManager;
+    Sensor accelerometer;
+    float[] lastAccelerometer = new float[3];
+    View view1, view2, view3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accelerometer);
 
-        // Initialisation du SensorManager et du capteur d'accéléromètre
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        // Trouver les vues à colorer
+        view1 = findViewById(R.id.top_zone);
+        view2 = findViewById(R.id.middle_zone);
+        view3 = findViewById(R.id.bottom_zone);
 
-        // Récupérer le LinearLayout de fond
-        backgroundButton = findViewById(R.id.backgroundButton);
+        // Obtenir l'instance du SensorManager et de l'accéléromètre
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Enregistrement du SensorEventListener pour écouter les changements de l'accéléromètre
+
+        // Enregistrer l'écouteur du capteur d'accéléromètre
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // Désenregistrement du SensorEventListener lorsque l'activité est en pause
+
+        // Arrêter l'écouteur du capteur d'accéléromètre pour économiser les ressources
         sensorManager.unregisterListener(this);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // Récupération des valeurs de l'accéléromètre
-        float x = event.values[0];
-        float y = event.values[1];
-        float z = event.values[2];
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-        // Calcul de la magnitude de l'accélération
-        double acceleration = Math.sqrt(x * x + y * y + z * z);
+            // Obtenir les valeurs d'accéléromètre sur les trois axes
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
 
-        // Détermination de la couleur du fond en fonction de l'accélération
-        int color;
-        if (acceleration < 10) {
-            color = Color.GREEN; // Valeurs inférieures : vert
-        } else if (acceleration < 12) {
-            color = Color.BLACK; // Valeurs moyennes : noir
-        } else {
-            color = Color.RED; // Valeurs supérieures : rouge
+            // Mettre à jour la dernière valeur d'accéléromètre
+            lastAccelerometer[0] = x;
+            lastAccelerometer[1] = y;
+            lastAccelerometer[2] = z;
+
+            // Changer la couleur des vues en fonction des valeurs d'accéléromètre
+            if (x < -5f) {
+                view1.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+            } else if (x > 5f) {
+                view1.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+            } else {
+                view1.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
+            }
+
+            if (y < -5f) {
+                view2.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+            } else if (y > 5f) {
+                view2.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+            } else {
+                view2.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
+            }
+
+            if (z < -5f) {
+                view3.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+            } else if (z > 5f) {
+                view3.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+            } else {
+                view3.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
+            }
         }
-
-        // Changement de la couleur de fond du LinearLayout
-        backgroundButton.setBackgroundColor(color);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Méthode non utilisée dans cette implémentation
+        // Ne rien faire pour le moment
     }
 }

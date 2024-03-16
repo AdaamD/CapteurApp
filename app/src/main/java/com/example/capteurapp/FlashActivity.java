@@ -1,108 +1,165 @@
 package com.example.capteurapp;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraManager;
-import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Objects;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.hardware.SensorManager;
+import android.os.Bundle;
 
-public class FlashActivity extends AppCompatActivity implements SensorEventListener {
+import android.hardware.Sensor;
+import android.graphics.Camera;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorEvent;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.widget.Toast;
+import android.hardware.camera2.CameraManager;
 
-    private SensorManager sensorManager;
-    private Sensor accelerometer;
-    private boolean isFlashOn = false;
-    private float acceleration;
-    private float accelerationCurrent;
-    private float accelerationLast;
-    private static final float SHAKE_THRESHOLD = 12f;
+import android.os.Build;
 
-    private CameraManager cameraManager;
-    private String cameraId;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+
+public class FlashActivity extends AppCompatActivity {
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private static final int SHAKE_THRESHOLD = 800;
+
+    private long lastUpdate;
+    private float last_x, last_y, last_z;
+
+    private boolean isFlashOn;
+
+    private TextView textView;
+    private ImageView imageView;
+
+    private CameraManager mCameraManager;
+    private String mCameraId;
+
+    private final SensorEventListener mSensorListener = new SensorEventListener() {
+
+        public void onSensorChanged(SensorEvent se) {
+            if (se.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                long curTime = System.currentTimeMillis();
+                if ((curTime - lastUpdate) > 100) {
+                    long diffTime = (curTime - lastUpdate);
+                    lastUpdate = curTime;
+
+                    float x = se.values[0];
+                    float y = se.values[1];
+                    float z = se.values[2];
+
+                    float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+                    if (speed > SHAKE_THRESHOLD) {
+                        toggleFlashlight();
+                    }
+
+                    last_x = x;
+                    last_y = y;
+                    last_z = z;
+                }
+            }
+        }
+
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flash);
 
-        // Vérifier si l'appareil dispose d'un flash
-        if (!getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
-            Toast.makeText(this, "Votre appareil ne dispose pas de flash!", Toast.LENGTH_SHORT).show();
+        textView = findViewById(R.id.instructionTextView);
+        imageView = findViewById(R.id.imageFlash);
+
+        // Initialize the sensor manager and accelerometer
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        // Check if the device has a flash
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {
+            Toast.makeText(this, "Votre appareil ne dispose pas d'un flash", Toast.LENGTH_LONG).show();
             finish();
         }
 
-        // Initialisation du capteur d'accéléromètre
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
-        // Initialisation de la caméra pour contrôler le flash
-        cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        // Get the camera instance
+        mCameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
-            cameraId = cameraManager.getCameraIdList()[0];
-        } catch (CameraAccessException e) {
+            mCameraId = mCameraManager.getCameraIdList()[0];
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        isFlashOn = false;
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Enregistrement du SensorEventListener pour écouter les changements de l'accéléromètre
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        // Register the accelerometer sensor listener
+        mSensorManager.registerListener(mSensorListener, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // Désenregistrement du SensorEventListener lorsque l'activité est en pause
-        sensorManager.unregisterListener(this);
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        // Récupération de la valeur de l'accélération sur les trois axes
-        float x = event.values[0];
-        float y = event.values[1];
-        float z = event.values[2];
-        // Calcul de l'accélération linéaire
-        accelerationLast = accelerationCurrent;
-        accelerationCurrent = (float) Math.sqrt(x * x + y * y + z * z);
-        float delta = accelerationCurrent - accelerationLast;
-        acceleration = acceleration * 0.9f + delta;
-        // Si le seuil de secousse est dépassé, basculer l'état du flash
-        if (acceleration > SHAKE_THRESHOLD) {
-            Toast.makeText(this, "Secousse détectée!", Toast.LENGTH_SHORT).show();
-            toggleFlashlight();
+        // Unregister the accelerometer sensor listener
+        mSensorManager.unregisterListener(mSensorListener);
+        // Turn off the flash if it is on
+        if (isFlashOn) {
+            turnOffFlash();
         }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Méthode non utilisée dans cette implémentation
     }
 
     private void toggleFlashlight() {
-        try {
-            if (isFlashOn) {
-                // Éteindre le flash
-                cameraManager.setTorchMode(cameraId, false);
-                isFlashOn = false;
-            } else {
-                // Allumer le flash
-                cameraManager.setTorchMode(cameraId, true);
-                isFlashOn = true;
-            }
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
+        if (isFlashOn) {
+            turnOffFlash();
+        } else {
+            turnOnFlash();
         }
     }
+
+    private void turnOnFlash() {
+        if (!isFlashOn) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    mCameraManager.setTorchMode(mCameraId, true);
+                } else {
+                    Toast.makeText(this, "Impossible d'activer le flash pour la version Android inférieure à Marshmallow", Toast.LENGTH_SHORT).show();
+                }
+                isFlashOn = true;
+                textView.setText("Flash allumé");
+                imageView.setImageResource(R.drawable.flash_on);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void turnOffFlash() {
+        if (isFlashOn) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    mCameraManager.setTorchMode(mCameraId, false);
+                } else {
+                    Toast.makeText(this, "Impossible de désactiver le flash pour la version Android inférieure à Marshmallow", Toast.LENGTH_SHORT).show();
+                }
+                isFlashOn = false;
+                textView.setText("Flash éteint");
+                imageView.setImageResource(R.drawable.flash_off);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
