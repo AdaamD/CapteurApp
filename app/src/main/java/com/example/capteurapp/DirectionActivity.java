@@ -6,6 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +23,8 @@ public class DirectionActivity extends AppCompatActivity {
 
     private TextView directionTextView;
 
+    ImageButton backButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,15 @@ public class DirectionActivity extends AppCompatActivity {
         nextTiming = System.currentTimeMillis();
 
         directionTextView = findViewById(R.id.directionTextView);
+
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Cette ligne termine l'activité en cours
+            }
+        });
 
         // Initialisation du SensorManager et récupération du capteur d'accélération linéaire
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);

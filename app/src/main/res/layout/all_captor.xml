@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/grey_back1">
-
 
     <Button
         android:id="@+id/btnAllSensors"
@@ -26,7 +24,7 @@
         android:id="@+id/btnUnavailableSensors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Désaivation du capteur \n\n Goldfish 3-axis Gyroscope"
+        android:text="Désactivation du capteur \n\n Goldfish 3-axis Gyroscope"
         android:layout_below="@id/btnAvailableSensors"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true" />
@@ -41,5 +39,13 @@
         android:textColor="@android:color/black"
         android:textSize="16sp" />
 
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/accueil" />
 
 </RelativeLayout>

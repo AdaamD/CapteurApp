@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class AllCaptorActivity extends AppCompatActivity {
 
     private SensorManager sensorManager;
     private List<Sensor> sensorList;
+    ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,16 @@ public class AllCaptorActivity extends AppCompatActivity {
         btnUnavailableSensors = findViewById(R.id.btnUnavailableSensors);
         txtSensorList = findViewById(R.id.txtSensorList);
 
+        backButton = findViewById(R.id.backButton);
+
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Cette ligne termine l'activité en cours
+            }
+        });
 
         btnAllSensors.setOnClickListener(new View.OnClickListener() {
             @Override

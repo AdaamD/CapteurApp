@@ -6,6 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
     private Sensor proximitySensor;
     private ImageView imageView;
     private TextView proximityStatus;
+    ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,14 @@ public class ProximityActivity extends AppCompatActivity implements SensorEventL
         // Référence à l'image view
         imageView = findViewById(R.id.imageView);
         proximityStatus = findViewById(R.id.proximityStatus);
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Cette ligne termine l'activité en cours
+            }
+        });
     }
 
     @Override

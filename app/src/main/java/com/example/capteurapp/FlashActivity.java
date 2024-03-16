@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.hardware.Sensor;
 import android.graphics.Camera;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.hardware.SensorEventListener;
@@ -41,6 +42,7 @@ public class FlashActivity extends AppCompatActivity {
     private CameraManager mCameraManager;
     private String mCameraId;
 
+    ImageButton backButton;
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
         public void onSensorChanged(SensorEvent se) {
@@ -80,9 +82,18 @@ public class FlashActivity extends AppCompatActivity {
         textView = findViewById(R.id.instructionTextView);
         imageView = findViewById(R.id.imageFlash);
 
+        backButton = findViewById(R.id.backButton);
+
         // Initialize the sensor manager and accelerometer
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Cette ligne termine l'activité en cours
+            }
+        });
 
         // Check if the device has a flash
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)) {

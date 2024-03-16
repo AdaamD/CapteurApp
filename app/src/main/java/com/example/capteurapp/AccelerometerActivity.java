@@ -7,9 +7,10 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
 import android.content.Context;
+import android.widget.Button;
+import android.widget.ImageButton;
+
 import androidx.core.content.ContextCompat;
-
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AccelerometerActivity extends AppCompatActivity implements SensorEventListener {
@@ -19,10 +20,14 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
     float[] lastAccelerometer = new float[3];
     View view1, view2, view3;
 
+    ImageButton backButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accelerometer);
+
+        backButton = findViewById(R.id.backButton);
 
         // Trouver les vues à colorer
         view1 = findViewById(R.id.top_zone);
@@ -32,6 +37,13 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
         // Obtenir l'instance du SensorManager et de l'accéléromètre
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Cette ligne termine l'activité en cours
+            }
+        });
     }
 
     @Override
