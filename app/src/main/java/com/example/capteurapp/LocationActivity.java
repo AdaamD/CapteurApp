@@ -2,6 +2,8 @@ package com.example.capteurapp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +21,10 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class LocationActivity extends AppCompatActivity {
 
@@ -103,7 +109,21 @@ public class LocationActivity extends AppCompatActivity {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         locationTextView.setText("Latitude : " + latitude + "\nLongitude : " + longitude);
+
+        // Utilisation des services de géocodage inversé pour obtenir l'adresse
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && addresses.size() > 0) {
+                String city = addresses.get(0).getLocality();
+                String country = addresses.get(0).getCountryName();
+                locationTextView.append("\nCity: " + city + "\nCountry: " + country);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
